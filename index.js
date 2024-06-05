@@ -24,6 +24,13 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE","OPTIONS"],
   credentials: true,
 }));
+app.options(
+  "*",
+  cors({
+    origin: 'https://tasksps-client.vercel.app/',
+    credentials: true
+  })
+);
 
 app.get("/test", async (req, res) => {
 

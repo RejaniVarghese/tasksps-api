@@ -61,9 +61,10 @@ app.post('/login', async (req, res) => {
       if (passOk) {
         jwt.sign({
           email: userDoc.email, id: userDoc._id
-        }, jwtSecret, {}, (err, token) => {
+        }, jwtSecret, {expiresIn: "1d"}, (err, token) => {
           if (err) throw err;
-          res.cookie('token', token).json(userDoc);
+          res.cookie('token', token,{httpOnly: true,secure: true,maxAge: 86400000,});
+          return res.status(200).json(userDoc)
         });
       } else {
         res.status(422).json('something went wrong');

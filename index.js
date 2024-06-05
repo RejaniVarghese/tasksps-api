@@ -32,8 +32,12 @@ app.options(
   })
 );
 
-app.get("/test", async (req, res) => {
 
+app.get("/", async (req, res) => {
+  res.json("listening to home page");
+});
+
+app.get("/test", async (req, res) => {
   res.json("listening to home page");
 });
 

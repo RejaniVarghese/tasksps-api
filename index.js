@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: ["https://tasksps-api.vercel.app"],
+  origin: ["https://tasksps-client.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 

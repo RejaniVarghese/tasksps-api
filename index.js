@@ -1,6 +1,5 @@
 import express, { response } from "express";
 import cors from "cors";
-import { Server } from 'socket.io'
 import mongoose from "mongoose";
 import "dotenv/config";
 import cookieParser from 'cookie-parser';
@@ -20,40 +19,13 @@ const jwtSecret = process.env.JWT_SECRET_KEY;
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Add headers before the routes are defined
-app.use(function (req, res, next) {
-
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'https://tasksps-api.vercel.app');
-
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Pass to next layer of middleware
-  next();
-});
-
 app.use(cors({
-  origin: "["https://tasksps-client.vercel.app"]",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: ["https://tasksps-client.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE","OPTIONS"],
   credentials: true,
-
 }));
 
-
-app.get("/", (req, res) => {
-  res.status(200).send("home page");
-})
-
-app.get("/test", (req, res) => {
+app.get("/test", async (req, res) => {
 
   res.json("listening to home page");
 });
@@ -103,17 +75,6 @@ app.get('/remove-cookie', (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://tasksps-api.vercel.app');
-
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
   const { token } = req.cookies;
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -167,10 +128,8 @@ app.post("/events", async (req, res) => {
   }
 });
 
-/* if (process.env.API_PORT) {
+if (process.env.API_PORT) {
   app.listen(process.env.API_PORT, () => {
     console.log("listening to port 7000");
   })
-} */
-const server = app.listen(process.env.API_PORT || 3000);
-const io = new Server(server, { cors: { origin: '*' } });
+}

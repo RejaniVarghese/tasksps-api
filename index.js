@@ -26,14 +26,12 @@ app.use(cors({
 
 }));
 
-
 app.get("/", (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
   res.status(200).send("home page");
 })
 
 app.get("/test", (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
+
   res.json("listening to home page");
 });
 
@@ -46,10 +44,8 @@ app.post("/register", async (req, res) => {
       email,
       password,
     });
-    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).json(userDoc);
   } catch (error) {
-    res.set('Access-Control-Allow-Origin', '*');
     res.status(422).json(error);
   }
 })
@@ -65,15 +61,12 @@ app.post('/login', async (req, res) => {
           email: userDoc.email, id: userDoc._id
         }, jwtSecret, {}, (err, token) => {
           if (err) throw err;
-          res.set('Access-Control-Allow-Origin', '*');
           res.cookie('token', token).json(userDoc);
         });
       } else {
-        res.set('Access-Control-Allow-Origin', '*');
         res.status(422).json('something went wrong');
       }
     } else {
-      res.set('Access-Control-Allow-Origin', '*');
       res.status(422).json('not found');
     }
   } catch (error) {
@@ -83,7 +76,6 @@ app.post('/login', async (req, res) => {
 
 app.get('/remove-cookie', (req, res) => {
   res.cookie('token', '', { expires: new Date(0) });
-  res.set('Access-Control-Allow-Origin', '*');
   res.send('Cookie removed');
 });
 
@@ -93,7 +85,6 @@ app.get('/profile', (req, res) => {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       const { name, email, _id } = await User.findById(userData.id);
-      res.set('Access-Control-Allow-Origin', '*');
       res.json({ name, email, _id });
 
     })
@@ -112,14 +103,11 @@ app.get("/events", async (req, res) => {
     const decoded = jwt.verify(token, jwtSecret);
     const tasksWithUser = await Task.findOne({ 'user': decoded.id });
     if (tasksWithUser) {
-      res.set('Access-Control-Allow-Origin', '*');
       return res.status(200).send(tasksWithUser.tasks)
     } else {
-      res.set('Access-Control-Allow-Origin', '*');
       return res.status(200).send([{}])
     }
   } catch (err) {
-    res.set('Access-Control-Allow-Origin', '*');
     return res.status(401).json({ message: 'Invalid token', error: err });
   }
 
@@ -138,7 +126,7 @@ app.post("/events", async (req, res) => {
         user,
       });
     }
-    res.set('Access-Control-Allow-Origin', '*');
+
     res.status(200).json(taskDoc);
   } catch (error) {
     res.status(422).json(error);

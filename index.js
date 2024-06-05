@@ -20,11 +20,15 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: process.env.FRONT_END_URL,
+  origin: ["https://tasksps-api.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
+
 }));
 
-app.get("/test", async (req, res) => {
+
+
+app.get("/test", (req, res) => {
 
   res.json("listening to home page");
 });

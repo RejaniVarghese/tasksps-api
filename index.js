@@ -102,7 +102,7 @@ app.get('/remove-cookie', (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://tasksps-client.vercel.app');
+  res.setHeader('Access-Control-Allow-Origin', 'https://tasksps-api.vercel.app');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

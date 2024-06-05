@@ -1,5 +1,6 @@
 import express, { response } from "express";
 import cors from "cors";
+import { Server } from 'socket.io'
 import mongoose from "mongoose";
 import "dotenv/config";
 import cookieParser from 'cookie-parser';
@@ -41,7 +42,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(cors({
-  origin: ["https://tasksps-client.vercel.app"],
+  origin: "["https://tasksps-client.vercel.app"]",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 
@@ -166,8 +167,10 @@ app.post("/events", async (req, res) => {
   }
 });
 
-if (process.env.API_PORT) {
+/* if (process.env.API_PORT) {
   app.listen(process.env.API_PORT, () => {
     console.log("listening to port 7000");
   })
-}
+} */
+const server = app.listen(process.env.API_PORT || 3000);
+const io = new Server(server, { cors: { origin: '*' } });

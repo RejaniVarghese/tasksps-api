@@ -26,7 +26,9 @@ app.use(cors({
 
 }));
 
-
+app.get("/", (req, res) => {
+  res.status(200).send("home page");
+})
 
 app.get("/test", (req, res) => {
 

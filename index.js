@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: ["https://tasksps-client.vercel.app"],
-  methods: ["GET", "POST", "PUT", "DELETE","OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
 }));
 app.options(
@@ -83,6 +83,7 @@ app.get('/remove-cookie', (req, res) => {
 
 app.get('/profile', (req, res) => {
   const { token } = req.cookies;
+  res.set('Access-Control-Allow-Origin', '*');
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
@@ -96,7 +97,7 @@ app.get('/profile', (req, res) => {
 app.get("/events", async (req, res) => {
 
   const token = req.cookies.token;
-
+  res.set('Access-Control-Allow-Origin', '*');
   if (!token) {
     return res.status(403).json({ message: 'No token provided' });
   }
